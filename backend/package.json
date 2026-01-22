@@ -1,0 +1,32 @@
+{
+  "name": "secret-match-api",
+  "version": "1.0.0",
+  "description": "API for Secret Match event",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "seed-admin": "node scripts/seedAdmin.js",
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": [
+    "api",
+    "secret-match",
+    "nodejs",
+    "mongodb"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0",
+    "nodemailer": "^7.0.12"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Secret Match - Testni Vmesnik</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 30px;
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #4CAF50;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .tab:hover {
+            background: #f9f9f9;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        
+        button {
+            background: linear-gradient(to right, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.secondary {
+            background: linear-gradient(to right, #2196F3, #1976D2);
+        }
+        
+        button.danger {
+            background: linear-gradient(to right, #f44336, #d32f2f);
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .result h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .user-info.active {
+            display: block;
+        }
+        
+        .match-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .match-card h2 {
+            color: #d84315;
+            margin-bottom: 15px;
+        }
+        
+        .status {
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .api-url {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎁 Secret Match API</h1>
+            <div class="subtitle">Testni vmesnik za RESTful API</div>
+        </header>
+        
+        <div class="content">
+            <!-- User Info -->
+            <div id="userInfo" class="user-info">
+                <h3>🔑 Prijavljen kot: <span id="currentUser"></span></h3>
+                <p>Token: <span id="tokenPreview"></span>...</p>
+                <button onclick="logout()" class="danger">Odjava</button>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('auth')">👤 Avtentikacija</div>
+                <div class="tab" onclick="showTab('match')">🎯 Dogodek</div>
+                <div class="tab" onclick="showTab('admin')">👑 Admin</div>
+                <div class="tab" onclick="showTab('api')">🔧 API Info</div>
+            </div>
+            
+            <!-- Auth Tab -->
+<div id="authTab" class="tab-content active">
+    <h2>Registracija & Prijava</h2>
+    
+    <!-- Registration Form -->
+    <div id="registerForm" style="display: block;">
+        <h3>📝 Nova registracija</h3>
+        <div class="form-group">
+            <label for="regName">Ime:</label>
+            <input type="text" id="regName" placeholder="Vnesite ime">
+        </div>
+        
+        <div class="form-group">
+            <label for="regEmail">Email:</label>
+            <input type="email" id="regEmail" placeholder="vnesite@email.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="regPassword">Geslo:</label>
+            <input type="password" id="regPassword" placeholder="Vnesite geslo">
+        </div>
+        
+        <div class="form-group">
+            <label for="regPreferences">Želje/preference (opcijsko):</label>
+            <textarea id="regPreferences" rows="3" placeholder="Na primer: Ljubim čokolado, knjige, kavo..."></textarea>
+        </div>
+        
+        <button onclick="register()">📝 Registriraj se</button>
+        <button onclick="showLoginForm()" class="secondary">🔑 Že imaš račun? Prijavi se</button>
+    </div>
+    
+    <!-- Login Form -->
+    <div id="loginForm" style="display: none;">
+        <h3>🔑 Prijava</h3>
+        <div class="form-group">
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" placeholder="vnesite@email.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="loginPassword">Geslo:</label>
+            <input type="password" id="loginPassword" placeholder="Vnesite geslo">
+        </div>
+        
+        <button onclick="login()">🔑 Prijava</button>
+        <button onclick="showRegisterForm()" class="secondary">📝 Nimaš računa? Registriraj se</button>
+    </div>
+    
+    <div id="authResult" class="result" style="display:none;"></div>
+</div>
+            
+            <!-- Match Tab -->
+            <div id="matchTab" class="tab-content">
+                <h2>Secret Match Dogodek</h2>
+                <p>Pridružite se dogodku in poiščite svojega secret match!</p>
+                
+                <button onclick="joinEvent()">🎯 Pridruži se dogodku</button>
+                <button onclick="viewMatch()">🔍 Poglej svoj match</button>
+                <button onclick="forceViewMatch()" class="secondary">🔄 Osveži match</button>
+<button onclick="refreshUserData()" class="secondary">📱 Osveži podatke</button>
+                
+                <div id="matchCard" class="match-card" style="display:none;">
+                    <h2>🎉 TVOJ SECRET MATCH!</h2>
+                    <p id="matchName"></p>
+                    <p id="matchEmail"></p>
+                    <p id="matchPreferences"></p>
+                </div>
+                
+                <div id="matchResult" class="result" style="display:none;"></div>
+            </div>
+            
+            <!-- Admin Tab -->
+            <div id="adminTab" class="tab-content">
+                <h2>Admin Nadzorna Plošča</h2>
+                <p>Za admin dostop se prijavite z: <strong>admin@secretmatch.com / admin123</strong></p>
+                
+                <div class="form-group">
+                    <label for="adminEmail">Admin Email:</label>
+                    <input type="email" id="adminEmail" value="admin@secretmatch.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPassword">Admin Geslo:</label>
+                    <input type="password" id="adminPassword" value="admin123">
+                </div>
+               <!-- V adminTab dodajte reset gumb: -->
+<button onclick="adminLogin()">👑 Prijava kot Admin</button>
+<button onclick="registerAdmin()" class="secondary">📝 Registriraj admina</button>
+<button onclick="assignMatches()" class="secondary" id="assignBtn" disabled>🔄 Dodeli pare</button>
+<button onclick="resetMatches()" class="danger" id="resetBtn" disabled>🗑️ Resetiraj pare</button>
+<button onclick="getStats()" class="secondary" id="statsBtn" disabled>📊 Statistika</button>
+<button onclick="sendNotifications()" class="secondary" id="notifyBtn" disabled>
+    📧 Pošlji email obvestila
+</button>
+                <div id="adminResult" class="result" style="display:none;"></div>
+            </div>
+            
+            <!-- API Info Tab -->
+            <div id="apiTab" class="tab-content">
+                <h2>API Dokumentacija</h2>
+                
+                <h3> Endpointi:</h3>
+                <div class="api-url">POST /users/register</div>
+                <div class="api-url">POST /users/login</div>
+                <div class="api-url">POST /match/join</div>
+                <div class="api-url">POST /match/assign (admin)</div>
+                <div class="api-url">GET /match/view</div>
+                <div class="api-url">GET /match/stats (admin)</div>
+                
+                <h3>📋 Testni podatki:</h3>
+                <pre>{
+  "name": "Test Uporabnik",
+  "email": "test@test.com", 
+  "password": "test123"
+}</pre>
+                
+                <h3>🔑 JWT Token:</h3>
+                <p>Po uspešni prijavi dobite JWT token, ki ga uporabite v Authorization headerju:</p>
+                <pre>Authorization: Bearer &lt;vaš_token&gt;</pre>
+                
+                <button onclick="testAllEndpoints()">🧪 Testiraj vse endpoint-e</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Secret Match API v1.0.0 | RESTful API testni vmesnik</p>
+        </footer>
+    </div>
+
+    <script src="./js/app.js"></script>
+<script src="./js/utils.js"></script>
+<script src="./js/auth.js"></script>
+<script src="./js/match.js"></script>
+<script src="./js/admin.js"></script>
+</body>
+</html>
