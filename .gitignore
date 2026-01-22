@@ -31,3 +31,11 @@ Thumbs.db
 *.swp
 *.swo
 *~
+# Backend specific
+backend/node_modules/
+backend/package-lock.json
+backend/npm-debug.log*
+
+# Frontend specific (če imaš)
+frontend/node_modules/
+frontend/package-lock.json

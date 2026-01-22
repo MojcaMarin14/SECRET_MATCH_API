@@ -54,4 +54,39 @@ POST /match/reset
 GET /match/stats
 POST /match/notify
 
+## KAKO DELUJE
+Za udeležence:
+
+Registriraj se z emailom in geslom
+Pridruži se dogodku
+Čakaj da admin dodeli pare
+Ogledaj si svojega dodeljenega partnerja
+
+
+Za administratorja:
+
+Prijavi se z admin@secretmatch.com / admin123
+Preglej statistiko - koliko je udeležencev
+Dodeli pare - en klik za naključno razporeditev
+Pošlji obvestila - email vsem udeležencem
+
+## TEHNOLOGIJE
+Backend: Node.js, Express.js, MongoDB
+Avtentikacija: JWT, bcrypt
+Email: Nodemailer, Gmail SMTP
+Frontend: HTML5, CSS3, JavaScript
+Baza: Mongoose ODM
+
+## Odpravljanje težav
+Emaili ne pridejo?
+- Omogoči 2-step verification v Google
+- Ustvari App Password (ne navadno geslo)
+- Preveri .env nastavitve
+  
+Pari se ne dodelijo?
+
+- Preveri da je vsaj 2 uporabnika pridruženih
+- Preveri console za napake (F12 → Network)
+- Preveri da si prijavljen kot admin
+  
 Avtor: Mojca Marin
